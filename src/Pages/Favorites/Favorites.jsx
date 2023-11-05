@@ -7,12 +7,17 @@ const Favorites = () => {
     const [favorites, setFavorites] = useState([]);
     const [notFound, setNotFound] = useState('')
     const [showAll, setShowAll] = useState(false)
+    const [total, setTotal] = useState(0);
 
     useEffect(()=>{
         const favoriteItems = JSON.parse(localStorage.getItem("favorites"));
 
         if(favoriteItems){
-            setFavorites(favoriteItems)
+            setFavorites(favoriteItems);
+            const total = favoriteItems.reduce((preValue, currentValue)=> preValue + currentValue.price, 0);
+            const currentTotal = total.toFixed(2)
+            setTotal(currentTotal)
+            
         }
         else{
             setNotFound("No data Found")
@@ -35,12 +40,17 @@ const Favorites = () => {
         ) : (
           <div>
             {favorites.length > 0 && (
-              <button
-                onClick={handleRemove}
-                className="btn btn-primary block mx-auto mt-4 mb-4"
-              >
-                Delete Favorites Item
-              </button>
+              <div className="flex justify-between items-center">
+                <button
+                  onClick={handleRemove}
+                  className="btn btn-primary  mt-4 mb-4"
+                >
+                  Delete Favorites Item
+                </button>
+                <h2 className="text-2xl text-red-500 font-bold">
+                  Total-Price: <span className="font-bold text-gray-950">{total}$</span>
+                </h2>
+              </div>
             )}
 
             <div className="grid grid-cols-2 gap-4">
