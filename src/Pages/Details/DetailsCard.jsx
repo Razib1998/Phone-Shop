@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
-const DetailsCard = ({phone}) => {
+   
+   import swal from "sweetalert";
 
-    const { image, brand_name, phone_name, price } = phone;
+   const DetailsCard = ({phone}) => {
+
+    const { id, image, brand_name, phone_name, price } = phone;
     
     const handleAddToFavorite = ()=>{
         
@@ -13,8 +16,22 @@ const DetailsCard = ({phone}) => {
          localStorage.setItem('favorites', JSON.stringify(addedFavoriteItems))
         }
         else{
-            addedFavoriteItems.push(...favoriteItems, phone);
-             localStorage.setItem('favorites', JSON.stringify(addedFavoriteItems))
+
+            const isExist = favoriteItems.find(phone => phone.id === id);
+
+            if(!isExist){
+              addedFavoriteItems.push(...favoriteItems, phone);
+              localStorage.setItem(
+                "favorites",
+                JSON.stringify(addedFavoriteItems)
+              );
+              swal("Good job!", "You clicked the button!", "success");
+              
+            }
+            else{
+                 swal("Ooops!", "This Phone is already added!", "error");
+            }
+            
         }
     }
 
